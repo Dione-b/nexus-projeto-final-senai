@@ -105,19 +105,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+# Usuário customizado com papel (role) para controle de acesso (RN01).
+AUTH_USER_MODEL = "accounts.User"
+
 # ---------------------------------------------------------------------
 # Banco de dados (PostgreSQL + pgvector)
 # ---------------------------------------------------------------------
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DB_NAME", "nexus"),
-        "USER": env("DB_USER", "nexus"),
-        "PASSWORD": env("DB_PASSWORD", "nexus"),
-        "HOST": env("DB_HOST", "localhost"),
-        "PORT": env("DB_PORT", "5432"),
+# `DB_ENGINE=sqlite3` permite desenvolver e rodar os testes sem o
+# PostgreSQL local (fallback de desenvolvimento). Em produção use o padrão
+# `postgresql` (docker-compose.yml subir o pgvector).
+DB_ENGINE = env("DB_ENGINE", "postgresql")
+
+if DB_ENGINE == "sqlite3":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("DB_NAME", "nexus"),
+            "USER": env("DB_USER", "nexus"),
+            "PASSWORD": env("DB_PASSWORD", "nexus"),
+            "HOST": env("DB_HOST", "localhost"),
+            "PORT": env("DB_PORT", "5432"),
+        }
+    }
 
 # ---------------------------------------------------------------------
 # Validação de senha
@@ -153,7 +169,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# A pasta `documents/` (seção 9 do README) é a MEDIA_ROOT: é nela que os
+# arquivos enviados pela base de conhecimento são armazenados (issue #5).
+MEDIA_ROOT = BASE_DIR / "documents"
+
+# ---------------------------------------------------------------------
+# Base de conhecimento (Sprint 02)
+# ---------------------------------------------------------------------
+# Tamanho máximo de upload configurável por variável de ambiente (RNF
+# Portabilidade). Usado pela validação do formulário de documentos.
+KNOWLEDGE_MAX_UPLOAD_MB = int(env("KNOWLEDGE_MAX_UPLOAD_MB", "10"))
 
 # ---------------------------------------------------------------------
 # Chave primária padrão

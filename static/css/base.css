@@ -130,6 +130,162 @@ a {
 }
 
 /* --------------------------------------------------------------------------
+   Formulários, cartões e listas (base de conhecimento)
+   -------------------------------------------------------------------------- */
+h1 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-sm);
+}
+
+h2 {
+    font-size: var(--font-size-base);
+    margin-block: var(--space-lg) var(--space-sm);
+}
+
+.card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--space-md);
+    margin-block: var(--space-md);
+}
+
+.formulario {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.campo {
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.campo input[type="text"],
+.campo input[type="file"] {
+    width: 100%;
+    padding: var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-surface);
+}
+
+.ajuda {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.erro {
+    font-size: var(--font-size-sm);
+    color: var(--color-danger);
+}
+
+.erros {
+    margin: 0;
+    padding-left: var(--space-lg);
+    list-style: disc;
+}
+
+.botao {
+    justify-self: start;
+    padding: var(--space-sm) var(--space-md);
+    border: 0;
+    border-radius: var(--border-radius);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.botao:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.mensagens {
+    margin-block: var(--space-md);
+    padding: 0;
+    list-style: none;
+}
+
+.mensagem {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-xs);
+}
+
+.mensagem--success {
+    background-color: #dcfce7;
+    color: var(--color-success);
+}
+
+.mensagem--error {
+    background-color: #fee2e2;
+    color: var(--color-danger);
+}
+
+.documentos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-sm);
+}
+
+.documento {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--space-sm) var(--space-md);
+}
+
+.documento__titulo {
+    font-weight: 600;
+}
+
+.documento__meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.badge {
+    padding: 0.125rem var(--space-sm);
+    border-radius: 999px;
+    font-size: var(--font-size-sm);
+    background-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.badge--pendente {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.badge--indexado {
+    background-color: #dcfce7;
+    color: var(--color-success);
+}
+
+.badge--erro {
+    background-color: #fee2e2;
+    color: var(--color-danger);
+}
+
+.vazio {
+    color: var(--color-text-muted);
+}
+
+.site-nav {
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-sm);
+}
+
+.site-nav a {
+    margin-right: var(--space-md);
+}
+
+/* --------------------------------------------------------------------------
    Ajustes para telas maiores
    -------------------------------------------------------------------------- */
 @media (min-width: 48rem) {

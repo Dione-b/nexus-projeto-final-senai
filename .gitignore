@@ -16,6 +16,10 @@ db.sqlite3
 staticfiles/
 media/
 
+# Mídia enviada (base de conhecimento) — só o .gitkeep é versionado
+documents/*
+!documents/.gitkeep
+
 # Editores e IDEs
 .idea/
 .vscode/

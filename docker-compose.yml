@@ -1,0 +1,24 @@
+# PostgreSQL + pgvector para o Nexus Atendimento (Sprint 01/02).
+# Uso: docker compose up -d
+# Em desenvolvimento sem Docker, defina DB_ENGINE=sqlite3 no .env.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: nexus-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-nexus}
+      POSTGRES_USER: ${DB_USER:-nexus}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-nexus}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - nexus_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-nexus} -d ${DB_NAME:-nexus}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  nexus_pgdata:

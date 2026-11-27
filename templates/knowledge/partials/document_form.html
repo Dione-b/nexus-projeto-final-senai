@@ -1,0 +1,38 @@
+<form method="post"
+      action="{% url 'knowledge:document_upload' %}"
+      enctype="multipart/form-data"
+      class="formulario"
+      hx-post="{% url 'knowledge:document_upload' %}"
+      hx-target="#upload-area"
+      hx-swap="innerHTML">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <ul class="erros">
+            {% for erro in form.non_field_errors %}
+                <li class="erro" role="alert">{{ erro }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="campo">
+        <label for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
+        {{ form.titulo }}
+        {% for erro in form.titulo.errors %}
+            <p class="erro" role="alert">{{ erro }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="campo">
+        <label for="{{ form.arquivo.id_for_label }}">{{ form.arquivo.label }}</label>
+        {{ form.arquivo }}
+        {% if form.arquivo.help_text %}
+            <p class="ajuda">{{ form.arquivo.help_text }}</p>
+        {% endif %}
+        {% for erro in form.arquivo.errors %}
+            <p class="erro" role="alert">{{ erro }}</p>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="botao">Enviar documento</button>
+</form>
