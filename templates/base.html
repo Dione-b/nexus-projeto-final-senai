@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Nexus Atendimento — atendimento inteligente com RAG">
+    <title>{% block title %}Nexus Atendimento{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="site-header__brand">Nexus Atendimento</a>
+    </header>
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <small>Nexus Atendimento — atendimento inteligente com RAG</small>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
