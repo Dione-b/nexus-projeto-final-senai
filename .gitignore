@@ -1,0 +1,31 @@
+# Arquivo de ambiente local (nunca versionar)
+.env
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Editores e IDEs
+.idea/
+.vscode/
+*.swp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs e cobertura
+*.log
+.coverage
+htmlcov/

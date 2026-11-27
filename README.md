@@ -214,13 +214,13 @@ A organização segue uma arquitetura de monólito modular, separando responsabi
 
 Progresso do projeto
 
-# **0%**
+# **4%**
 
-0 de 25 tarefas
+1 de 25 tarefas
 
 **Sprint 01 — Fundação**
 
-0/4
+1/4
 
 Configurar Django
 

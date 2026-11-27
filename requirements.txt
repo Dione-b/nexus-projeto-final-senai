@@ -1,0 +1,10 @@
+# Dependências do projeto Nexus Atendimento (Sprint 01 — Fundação)
+
+# Framework web e administração
+Django>=5.2
+
+# Leitura do arquivo .env (configuração portável por variáveis de ambiente)
+python-dotenv>=1.0
+
+# Driver PostgreSQL (obrigatório para o PostgreSQL + pgvector)
+psycopg[binary]>=3.2
