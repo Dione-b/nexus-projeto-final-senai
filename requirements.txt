@@ -11,3 +11,5 @@ psycopg[binary]>=3.2
 
 # Cliente oficial da API da Anthropic (Claude) — apps/rag/generator.py
 anthropic>=2.14
+# Campos vetoriais e indices (HNSW) para o Django - issue #3
+pgvector>=0.5

@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Necessario para os indices vetoriais (HnswIndex) - issue #3
+    "django.contrib.postgres",
     # Apps internos do Nexus Atendimento
     "apps.accounts.apps.AccountsConfig",
     "apps.conversations.apps.ConversationsConfig",
@@ -114,7 +116,7 @@ DATABASES = {
         "NAME": env("DB_NAME", "nexus"),
         "USER": env("DB_USER", "nexus"),
         "PASSWORD": env("DB_PASSWORD", "nexus"),
-        "HOST": env("DB_HOST", "localhost"),
+        "HOST": env("DB_HOST", "127.0.0.1"),
         "PORT": env("DB_PORT", "5432"),
     }
 }
@@ -159,6 +161,20 @@ MEDIA_ROOT = BASE_DIR / "media"
 # Chave primária padrão
 # ---------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------------------------------------------------------------------
+# Autenticacao (issue #3 - modelos da secao 8)
+# ---------------------------------------------------------------------
+# Usuario proprio da plataforma (cliente/administrador).
+AUTH_USER_MODEL = "accounts.User"
+
+# ---------------------------------------------------------------------
+# RAG / embeddings
+# ---------------------------------------------------------------------
+# Dimensao do vetor de embeddings; depende do modelo escolhido (secao 15
+# do README - decisao ainda pendente). Precisa ser conhecida pela migration
+# que cria a coluna "embedding vector(dim)".
+EMBEDDING_DIMENSIONS = int(env("EMBEDDING_DIMENSIONS", "1536"))
 
 # ---------------------------------------------------------------------
 # Logging (RNF — Observabilidade: logs, erros e métricas)
