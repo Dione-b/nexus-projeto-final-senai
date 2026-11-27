@@ -114,7 +114,7 @@ DATABASES = {
         "NAME": env("DB_NAME", "nexus"),
         "USER": env("DB_USER", "nexus"),
         "PASSWORD": env("DB_PASSWORD", "nexus"),
-        "HOST": env("DB_HOST", "localhost"),
+        "HOST": env("DB_HOST", "127.0.0.1"),
         "PORT": env("DB_PORT", "5432"),
     }
 }
