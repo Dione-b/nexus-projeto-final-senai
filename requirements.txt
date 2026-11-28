@@ -8,3 +8,9 @@ python-dotenv>=1.0
 
 # Driver PostgreSQL (obrigatório para o PostgreSQL + pgvector)
 psycopg[binary]>=3.2
+
+# Campos vetoriais (VectorField) dos modelos Django com pgvector
+pgvector>=0.3
+
+# Cliente HTTP para a API de embeddings (compatível com OpenAI)
+requests>=2.32
