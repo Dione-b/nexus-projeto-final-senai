@@ -35,6 +35,11 @@ class UserAdmin(DjangoUserAdmin):
         ),
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
+    # O papel também é informado na criação, senão todo usuário novo
+    # nasceria como cliente sem chance de escolha.
+    add_fieldsets = DjangoUserAdmin.add_fieldsets + (
+        ("Papel", {"fields": ("role",)}),
+    )
     list_display = ("username", "name", "email", "role", "is_staff", "is_active")
     list_filter = ("role", "is_staff", "is_superuser", "is_active", "groups")
     search_fields = ("username", "name", "email")

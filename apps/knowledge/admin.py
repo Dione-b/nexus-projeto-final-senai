@@ -20,10 +20,10 @@ class ChunkInline(admin.TabularInline):
 class DocumentAdmin(admin.ModelAdmin):
     """Documentos da base de conhecimento (RN01 — só administradores)."""
 
-    list_display = ("title", "status", "chunk_count", "created_at")
+    list_display = ("title", "status", "enviado_por", "chunk_count", "created_at")
     list_filter = ("status", "created_at")
     search_fields = ("title",)
-    readonly_fields = ("created_at",)
+    readonly_fields = ("created_at", "atualizado_em", "enviado_por")
     date_hierarchy = "created_at"
     inlines = (ChunkInline,)
 

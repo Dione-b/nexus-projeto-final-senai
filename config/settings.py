@@ -110,6 +110,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 # ---------------------------------------------------------------------
 # Banco de dados (PostgreSQL + pgvector)
 # ---------------------------------------------------------------------
+# O PostgreSQL é obrigatório: as migrations criam a extensão pgvector e o
+# índice HNSW (issue #3). Sobe com `docker compose up -d`.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -155,7 +157,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# A pasta `documents/` (seção 9 do README) é a MEDIA_ROOT: é nela que os
+# arquivos enviados pela base de conhecimento são armazenados (issue #5).
+MEDIA_ROOT = BASE_DIR / "documents"
+
+# ---------------------------------------------------------------------
+# Base de conhecimento (Sprint 02)
+# ---------------------------------------------------------------------
+# Tamanho máximo de upload configurável por variável de ambiente (RNF
+# Portabilidade). Usado pela validação do formulário de documentos.
+KNOWLEDGE_MAX_UPLOAD_MB = int(env("KNOWLEDGE_MAX_UPLOAD_MB", "10"))
 
 # ---------------------------------------------------------------------
 # Chave primária padrão

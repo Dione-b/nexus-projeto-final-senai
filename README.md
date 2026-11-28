@@ -214,13 +214,13 @@ A organização segue uma arquitetura de monólito modular, separando responsabi
 
 Progresso do projeto
 
-# **16%**
+# **24%**
 
-4 de 25 tarefas
+6 de 25 tarefas
 
 **Sprint 01 — Fundação**
 
-3/4
+4/4
 
 Configurar Django
 
@@ -232,7 +232,7 @@ Configurar Django Admin
 
 **Sprint 02 — Base de conhecimento**
 
-0/4
+1/4
 
 Implementar upload de documentos
 
