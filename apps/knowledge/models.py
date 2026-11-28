@@ -30,6 +30,13 @@ class Document(models.Model):
         default=Status.PENDENTE,
         verbose_name="status",
     )
+    # Motivo do status "erro" (issue #7): registra o que falhou na
+    # indexação para observabilidade (RNF — logs e erros).
+    error_message = models.TextField(
+        "mensagem de erro",
+        blank=True,
+        default="",
+    )
     created_at = models.DateTimeField("criado em", auto_now_add=True)
 
     # Campos de upload (issue #5 - US10).

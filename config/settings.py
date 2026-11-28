@@ -124,6 +124,35 @@ DATABASES = {
 }
 
 # ---------------------------------------------------------------------
+# Embeddings (API compatível com OpenAI — decisão da seção 15 do README)
+# ---------------------------------------------------------------------
+# Endpoint da API (qualquer provedor compatível: OpenAI, Azure, Groq,
+# LiteLLM, Ollama em modo compatível etc.).
+EMBEDDING_BASE_URL = env("EMBEDDING_BASE_URL", "https://api.openai.com/v1")
+
+# Chave da API. Obrigatória na maioria dos provedores.
+EMBEDDING_API_KEY = env("EMBEDDING_API_KEY", "")
+
+# Modelo de embeddings usado para indexar os chunks.
+EMBEDDING_MODEL = env("EMBEDDING_MODEL", "text-embedding-3-small")
+
+# Dimensão dos vetores gerados. Deve ser igual à dimensão do modelo acima
+# (ex.: text-embedding-3-small = 1536). Usada também no campo `Chunk.embedding`.
+EMBEDDING_DIMENSIONS = int(env("EMBEDDING_DIMENSIONS", "1536"))
+
+# Quantidade de textos enviados por requisição em lote.
+EMBEDDING_BATCH_SIZE = int(env("EMBEDDING_BATCH_SIZE", "100"))
+
+# Tempo limite de cada requisição, em segundos.
+EMBEDDING_TIMEOUT = int(env("EMBEDDING_TIMEOUT", "30"))
+
+# Tentativas extras em caso de falha transitória (rede, 429, 5xx).
+EMBEDDING_MAX_RETRIES = int(env("EMBEDDING_MAX_RETRIES", "3"))
+
+# Espera inicial do backoff exponencial, em segundos (1, 2, 4, 8...).
+EMBEDDING_BACKOFF = float(env("EMBEDDING_BACKOFF", "1"))
+
+# ---------------------------------------------------------------------
 # Validação de senha
 # ---------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
@@ -178,14 +207,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ---------------------------------------------------------------------
 # Usuario proprio da plataforma (cliente/administrador).
 AUTH_USER_MODEL = "accounts.User"
-
-# ---------------------------------------------------------------------
-# RAG / embeddings
-# ---------------------------------------------------------------------
-# Dimensao do vetor de embeddings; depende do modelo escolhido (secao 15
-# do README - decisao ainda pendente). Precisa ser conhecida pela migration
-# que cria a coluna "embedding vector(dim)".
-EMBEDDING_DIMENSIONS = int(env("EMBEDDING_DIMENSIONS", "1536"))
 
 # ---------------------------------------------------------------------
 # Logging (RNF — Observabilidade: logs, erros e métricas)

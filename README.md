@@ -358,11 +358,12 @@ Decisões registradas:
 
 Ainda precisam ser definidos:
 
-- Modelo de embeddings.
 - Estratégia de chunking e recuperação.
 - Segmento comercial da empresa fictícia.
 - Autenticação dos clientes e identificação entre canais.
 - Infraestrutura de hospedagem.
 - Métricas e limites aceitáveis de qualidade, custo e latência.
+
+**Decisão registrada — Modelo de embeddings (issue #7):** API de embeddings compatível com OpenAI (endpoint `EMBEDDING_BASE_URL`), modelo padrão `text-embedding-3-small` com 1536 dimensões. Modelo, endpoint, dimensão, lote e retentativas são configuráveis por variáveis de ambiente (`EMBEDDING_*`, veja `.env.example`), preservando o RNF de Portabilidade.
 
 A proposta é manter o projeto suficientemente completo para exercitar desenvolvimento full-stack, integração com IA generativa, RAG, bancos vetoriais, segurança e governança, sem adicionar complexidade arquitetural desnecessária.
