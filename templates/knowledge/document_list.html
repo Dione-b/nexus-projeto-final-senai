@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Base de conhecimento — Nexus Atendimento{% endblock %}
+
+{% block content %}
+    <h1>Base de conhecimento</h1>
+    <p>
+        Envie documentos em PDF, TXT ou MD. Cada envio fica com status
+        <strong>pendente</strong> até a indexação (US10).
+    </p>
+
+    {% if messages %}
+        <ul class="mensagens">
+            {% for mensagem in messages %}
+                <li class="mensagem mensagem--{{ mensagem.tags }}" role="status">{{ mensagem }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <section id="upload-area" class="card" aria-label="Enviar documento">
+        {% include "knowledge/partials/document_form.html" %}
+    </section>
+
+    <h2>Documentos cadastrados</h2>
+
+    {% if documentos %}
+        <ul class="documentos">
+            {% for documento in documentos %}
+                <li class="documento">
+                    <span class="documento__titulo">{{ documento.title }}</span>
+                    <span class="badge badge--{{ documento.status }}">
+                        {{ documento.get_status_display }}
+                    </span>
+                    <small class="documento__meta">
+                        {{ documento.enviado_por|default:"—" }} ·
+                        {{ documento.created_at|date:"d/m/Y H:i" }}
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="vazio">Nenhum documento cadastrado ainda.</p>
+    {% endif %}
+{% endblock %}
