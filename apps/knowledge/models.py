@@ -1,14 +1,8 @@
-"""Modelos do app knowledge (base de conhecimento).
-
-Corresponde à US10 (cadastrar documentos). A extração, chunking e indexação
-vetorial dos documentos são tratadas nas issues seguintes do Sprint 02.
-"""
-
 from pathlib import Path
 
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
+from pgvector.django import HnswIndex, VectorField
 
 
 def caminho_do_arquivo(_instancia, nome: str) -> str:
@@ -17,29 +11,33 @@ def caminho_do_arquivo(_instancia, nome: str) -> str:
 
 
 class Document(models.Model):
-    """Documento enviado por um administrador à base de conhecimento."""
+    """Documento da base de conhecimento cadastrado pelo administrador."""
 
     class Status(models.TextChoices):
         PENDENTE = "pendente", "Pendente"
         INDEXADO = "indexado", "Indexado"
-        ERRO = "erro", "Erro"
+        ERRO = "erro", "Erro na indexação"
 
-    titulo = models.CharField(
+    title = models.CharField(
         "título",
-        max_length=200,
+        max_length=255,
         blank=True,
         help_text="Opcional: preenchido com o nome do arquivo quando vazio.",
     )
-    arquivo = models.FileField(
-        "arquivo",
-        upload_to=caminho_do_arquivo,
-        help_text="Arquivo armazenado em MEDIA_ROOT/documents.",
-    )
     status = models.CharField(
-        "status",
         max_length=20,
         choices=Status.choices,
         default=Status.PENDENTE,
+        verbose_name="status",
+    )
+    created_at = models.DateTimeField("criado em", auto_now_add=True)
+
+    # Campos de upload (issue #5 - US10).
+    arquivo = models.FileField(
+        "arquivo",
+        upload_to=caminho_do_arquivo,
+        default="",
+        help_text="Arquivo armazenado em MEDIA_ROOT/documents.",
     )
     enviado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -49,19 +47,55 @@ class Document(models.Model):
         related_name="documentos_enviados",
         verbose_name="enviado por",
     )
-    criado_em = models.DateTimeField("criado em", default=timezone.now)
     atualizado_em = models.DateTimeField("atualizado em", auto_now=True)
 
     class Meta:
-        ordering = ["-criado_em"]
         verbose_name = "documento"
         verbose_name_plural = "documentos"
+        ordering = ["-created_at"]
 
     def save(self, *args, **kwargs):
         """Preenche o título com o nome do arquivo quando não informado."""
-        if not self.titulo:
-            self.titulo = Path(self.arquivo.name).stem or "Sem título"
+        if not self.title:
+            self.title = Path(self.arquivo.name).stem or "Sem título"
         super().save(*args, **kwargs)
 
-    def __str__(self) -> str:
-        return self.titulo
+    def __str__(self):
+        return self.title
+
+
+class Chunk(models.Model):
+    """Trecho de um documento com seu vetor de embedding (pgvector)."""
+
+    document = models.ForeignKey(
+        Document,
+        on_delete=models.CASCADE,
+        related_name="chunks",
+        verbose_name="documento",
+    )
+    content = models.TextField("conteúdo")
+    # Vetor denso; dimensão definida por EMBEDDING_DIMENSIONS no settings.
+    embedding = VectorField(
+        dimensions=settings.EMBEDDING_DIMENSIONS,
+        null=True,
+        blank=True,
+        verbose_name="embedding",
+    )
+
+    class Meta:
+        verbose_name = "trecho"
+        verbose_name_plural = "trechos"
+        # Busca vetorial aproximada (issue #3): indice HNSW por similaridade
+        # de cosseno sobre o embedding, usado pelo recuperador do RAG.
+        indexes = [
+            HnswIndex(
+                name="knowledge_chunk_embedding_hnsw",
+                fields=["embedding"],
+                opclasses=["vector_cosine_ops"],
+                m=16,
+                ef_construction=64,
+            ),
+        ]
+
+    def __str__(self):
+        return f"Chunk #{self.pk} de {self.document.title}"

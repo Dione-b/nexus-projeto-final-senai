@@ -34,10 +34,18 @@ class BaseDeConhecimentoTestCase(TestCase):
 
     def setUp(self):
         self.admin = User.objects.create_user(
-            username="admin", password="senha-forte-123", role=User.Role.ADMINISTRADOR
+            username="admin",
+            name="Administrador",
+            email="admin@nexus.test",
+            password="senha-forte-123",
+            role=User.Role.ADMINISTRADOR,
         )
         self.cliente = User.objects.create_user(
-            username="cliente", password="senha-forte-123", role=User.Role.CLIENTE
+            username="cliente",
+            name="Cliente",
+            email="cliente@nexus.test",
+            password="senha-forte-123",
+            role=User.Role.CLIENTE,
         )
         self.url = reverse("knowledge:document_list")
         self.url_upload = reverse("knowledge:document_upload")
@@ -98,7 +106,7 @@ class UploadTests(BaseDeConhecimentoTestCase):
         self.assertEqual(resposta.status_code, 302)
         documento = Document.objects.get()
         self.assertEqual(documento.status, Document.Status.PENDENTE)
-        self.assertEqual(documento.titulo, "politica-devolucao")
+        self.assertEqual(documento.title, "politica-devolucao")
         self.assertEqual(documento.enviado_por, self.admin)
         self.assertTrue(documento.arquivo.name.endswith("politica-devolucao.pdf"))
         # O arquivo físico existe dentro de MEDIA_ROOT (documents/).
@@ -129,7 +137,7 @@ class UploadTests(BaseDeConhecimentoTestCase):
             self.url_upload,
             {"arquivo": self.arquivo("politicas.txt", ARQUIVO_TXT, "text/plain")},
         )
-        self.assertEqual(Document.objects.get().titulo, "politicas")
+        self.assertEqual(Document.objects.get().title, "politicas")
 
     def test_upload_htmx_retorna_hx_redirect(self):
         """A resposta HTMX instrui o navegador a recarregar a listagem."""

@@ -53,7 +53,7 @@ def document_upload(request):
             {"form": form},
         )
 
-    messages.success(request, f'Documento "{documento.titulo}" enviado com status pendente.')
+    messages.success(request, f'Documento "{documento.title}" enviado com status pendente.')
 
     if request.headers.get("HX-Request"):
         # HTMX: instrui o navegador a recarregar a página com o novo documento.

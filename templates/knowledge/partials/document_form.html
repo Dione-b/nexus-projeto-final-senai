@@ -16,9 +16,9 @@
     {% endif %}
 
     <div class="campo">
-        <label for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
-        {{ form.titulo }}
-        {% for erro in form.titulo.errors %}
+        <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        {{ form.title }}
+        {% for erro in form.title.errors %}
             <p class="erro" role="alert">{{ erro }}</p>
         {% endfor %}
     </div>

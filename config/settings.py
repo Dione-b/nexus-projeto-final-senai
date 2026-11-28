@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Necessario para os indices vetoriais (HnswIndex) - issue #3
+    "django.contrib.postgres",
     # Apps internos do Nexus Atendimento
     "apps.accounts.apps.AccountsConfig",
     "apps.conversations.apps.ConversationsConfig",
@@ -105,35 +107,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Usuário customizado com papel (role) para controle de acesso (RN01).
-AUTH_USER_MODEL = "accounts.User"
-
 # ---------------------------------------------------------------------
 # Banco de dados (PostgreSQL + pgvector)
 # ---------------------------------------------------------------------
-# `DB_ENGINE=sqlite3` permite desenvolver e rodar os testes sem o
-# PostgreSQL local (fallback de desenvolvimento). Em produção use o padrão
-# `postgresql` (docker-compose.yml subir o pgvector).
-DB_ENGINE = env("DB_ENGINE", "postgresql")
-
-if DB_ENGINE == "sqlite3":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+# O PostgreSQL é obrigatório: as migrations criam a extensão pgvector e o
+# índice HNSW (issue #3). Sobe com `docker compose up -d`.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DB_NAME", "nexus"),
+        "USER": env("DB_USER", "nexus"),
+        "PASSWORD": env("DB_PASSWORD", "nexus"),
+        "HOST": env("DB_HOST", "127.0.0.1"),
+        "PORT": env("DB_PORT", "5432"),
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": env("DB_NAME", "nexus"),
-            "USER": env("DB_USER", "nexus"),
-            "PASSWORD": env("DB_PASSWORD", "nexus"),
-            "HOST": env("DB_HOST", "localhost"),
-            "PORT": env("DB_PORT", "5432"),
-        }
-    }
+}
 
 # ---------------------------------------------------------------------
 # Validação de senha
@@ -184,6 +172,20 @@ KNOWLEDGE_MAX_UPLOAD_MB = int(env("KNOWLEDGE_MAX_UPLOAD_MB", "10"))
 # Chave primária padrão
 # ---------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------------------------------------------------------------------
+# Autenticacao (issue #3 - modelos da secao 8)
+# ---------------------------------------------------------------------
+# Usuario proprio da plataforma (cliente/administrador).
+AUTH_USER_MODEL = "accounts.User"
+
+# ---------------------------------------------------------------------
+# RAG / embeddings
+# ---------------------------------------------------------------------
+# Dimensao do vetor de embeddings; depende do modelo escolhido (secao 15
+# do README - decisao ainda pendente). Precisa ser conhecida pela migration
+# que cria a coluna "embedding vector(dim)".
+EMBEDDING_DIMENSIONS = int(env("EMBEDDING_DIMENSIONS", "1536"))
 
 # ---------------------------------------------------------------------
 # Logging (RNF — Observabilidade: logs, erros e métricas)

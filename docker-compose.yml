@@ -1,9 +1,13 @@
-# PostgreSQL + pgvector para o Nexus Atendimento (Sprint 01/02).
+# Banco de dados do Nexus Atendimento.
+# Um único PostgreSQL guarda os dados transacionais e os vetoriais (pgvector),
+# conforme as seções 2, 3 e 8 do README.
+#
 # Uso: docker compose up -d
-# Em desenvolvimento sem Docker, defina DB_ENGINE=sqlite3 no .env.
+# As credenciais vêm do arquivo .env (veja o .env.example).
+
 services:
   db:
-    image: pgvector/pgvector:pg16
+    image: pgvector/pgvector:0.8.0-pg16
     container_name: nexus-db
     restart: unless-stopped
     environment:
@@ -11,14 +15,15 @@ services:
       POSTGRES_USER: ${DB_USER:-nexus}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-nexus}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      # Exposto apenas na máquina local.
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
     volumes:
-      - nexus_pgdata:/var/lib/postgresql/data
+      - nexus_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-nexus} -d ${DB_NAME:-nexus}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
 volumes:
-  nexus_pgdata:
+  nexus_db_data:

@@ -27,7 +27,7 @@ class DocumentUploadForm(forms.ModelForm):
 
     class Meta:
         model = Document
-        fields = ["titulo", "arquivo"]
+        fields = ["title", "arquivo"]
 
     # ------------------------------------------------------------------
     # Validações

@@ -9,7 +9,7 @@ from .models import Document
 class DocumentAdmin(admin.ModelAdmin):
     """Gestão dos documentos da base de conhecimento no admin."""
 
-    list_display = ("titulo", "status", "enviado_por", "criado_em")
-    list_filter = ("status", "criado_em")
-    search_fields = ("titulo",)
-    readonly_fields = ("criado_em", "atualizado_em", "enviado_por")
+    list_display = ("title", "status", "enviado_por", "created_at")
+    list_filter = ("status", "created_at")
+    search_fields = ("title",)
+    readonly_fields = ("created_at", "atualizado_em", "enviado_por")

@@ -27,13 +27,13 @@
         <ul class="documentos">
             {% for documento in documentos %}
                 <li class="documento">
-                    <span class="documento__titulo">{{ documento.titulo }}</span>
+                    <span class="documento__titulo">{{ documento.title }}</span>
                     <span class="badge badge--{{ documento.status }}">
                         {{ documento.get_status_display }}
                     </span>
                     <small class="documento__meta">
                         {{ documento.enviado_por|default:"—" }} ·
-                        {{ documento.criado_em|date:"d/m/Y H:i" }}
+                        {{ documento.created_at|date:"d/m/Y H:i" }}
                     </small>
                 </li>
             {% endfor %}

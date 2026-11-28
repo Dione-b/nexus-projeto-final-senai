@@ -16,7 +16,7 @@ def administrador_required(view_func):
     @wraps(view_func)
     def _wrapped(request, *args, **kwargs):
         usuario = request.user
-        if not usuario.is_authenticated or not usuario.is_administrador:
+        if not usuario.is_authenticated or not usuario.is_administrator:
             raise PermissionDenied("Acesso restrito a administradores.")
         return view_func(request, *args, **kwargs)
 
