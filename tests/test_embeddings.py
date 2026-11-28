@@ -91,7 +91,7 @@ class EmbedDocumentTestCase(TestCase):
 
         self.assertTrue(sucesso)
         document.refresh_from_db()
-        self.assertEqual(document.status, Document.STATUS_INDEXED)
+        self.assertEqual(document.status, Document.Status.INDEXADO)
         for chunk in document.chunks.all():
             self.assertIsNotNone(chunk.embedding)
             self.assertEqual(len(chunk.embedding), dim)
@@ -106,7 +106,7 @@ class EmbedDocumentTestCase(TestCase):
 
         self.assertFalse(sucesso)
         document.refresh_from_db()
-        self.assertEqual(document.status, Document.STATUS_ERROR)
+        self.assertEqual(document.status, Document.Status.ERRO)
         self.assertNotEqual(document.error_message, "")
         # Critério: nenhum chunk fica registrado sem vetor.
         self.assertEqual(document.chunks.filter(embedding__isnull=True).count(), 0)
@@ -130,5 +130,5 @@ class EmbedDocumentTestCase(TestCase):
 
         self.assertFalse(sucesso)
         document.refresh_from_db()
-        self.assertEqual(document.status, Document.STATUS_ERROR)
+        self.assertEqual(document.status, Document.Status.ERRO)
         self.assertEqual(post.call_count, 0)

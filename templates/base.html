@@ -11,6 +11,9 @@
 <body>
     <header class="site-header">
         <a href="/" class="site-header__brand">Nexus Atendimento</a>
+        <nav class="site-nav" aria-label="Principal">
+            <a href="{% url 'knowledge:document_list' %}">Base de conhecimento</a>
+        </nav>
     </header>
 
     <main class="site-main">
@@ -21,6 +24,8 @@
         <small>Nexus Atendimento — atendimento inteligente com RAG</small>
     </footer>
 
+    {# HTMX versionado localmente (static/js) para não depender de CDN. #}
+    <script src="{% static 'js/htmx.min.js' %}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

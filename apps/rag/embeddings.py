@@ -69,7 +69,7 @@ def embed_document(document, texts=None):
         for chunk, vector in zip(chunks, vectors):
             chunk.embedding = vector
             chunk.save(update_fields=["embedding"])
-        document.status = Document.STATUS_INDEXED
+        document.status = Document.Status.INDEXADO
         document.error_message = ""
         document.save(update_fields=["status", "error_message"])
 
@@ -168,6 +168,6 @@ def _replace_chunks(document, texts):
 
 def _mark_error(document, message):
     """Marca o documento como erro e registra o motivo (observabilidade)."""
-    document.status = Document.STATUS_ERROR
+    document.status = Document.Status.ERRO
     document.error_message = message
     document.save(update_fields=["status", "error_message"])
