@@ -214,9 +214,9 @@ A organização segue uma arquitetura de monólito modular, separando responsabi
 
 Progresso do projeto
 
-# **4%**
+# **8%**
 
-1 de 25 tarefas
+2 de 25 tarefas
 
 **Sprint 01 — Fundação**
 
@@ -244,7 +244,7 @@ Implementar indexação vetorial
 
 **Sprint 03 — RAG**
 
-0/4
+1/4
 
 Implementar busca semântica
 
@@ -352,9 +352,12 @@ Arquitetura multi-tenant
 
 Algumas definições não foram fornecidas inicialmente. Adotei o nome fictício Nexus, uma arquitetura de monólito modular, pgvector e Django Templates como propostas para simplificar o desenvolvimento.
 
+Decisões registradas:
+
+- **Provedor e modelo de LLM:** Anthropic (família Claude), consumido pela API oficial da Anthropic (`anthropic`). O modelo é configurável por `ANTHROPIC_MODEL` (padrão `claude-haiku-5-5`), a chave por `ANTHROPIC_API_KEY`, e o system prompt e a mensagem de fallback por `LLM_SYSTEM_PROMPT` e `LLM_FALLBACK_MESSAGE` (ver `.env.example`). Detalhes na issue #28 e implementação em `apps/rag/generator.py` (issue #11).
+
 Ainda precisam ser definidos:
 
-- Provedor e modelo de LLM.
 - Modelo de embeddings.
 - Estratégia de chunking e recuperação.
 - Segmento comercial da empresa fictícia.
